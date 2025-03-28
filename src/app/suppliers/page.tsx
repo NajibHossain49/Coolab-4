@@ -4,7 +4,7 @@ import type { Suppliers } from "../../types"; // Use type-only import
 // Async function to fetch supplier data from the API
 async function getSuppliers(): Promise<Suppliers[]> {
   try {
-    const res = await fetch("http://localhost:3000/api/suppliers", { 
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/suppliers`, { 
       cache: 'no-store',
       next: { revalidate: 0 }
     });

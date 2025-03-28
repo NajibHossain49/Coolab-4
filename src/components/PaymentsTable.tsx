@@ -45,7 +45,7 @@ export default function PaymentTable({
   const handleDelete = async (id: string) => {
     setIsDeleting(id);
     try {
-      const response = await fetch(`http://localhost:3000/api/payments/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments/${id}`, {
         method: "DELETE",
       });
 

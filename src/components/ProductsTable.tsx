@@ -41,7 +41,7 @@ export default function ProductsTable({ initialProducts }: ProductsTableProps) {
   const handleDelete = async (id: string) => {
     setIsDeleting(id);
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
         method: "DELETE",
       });
 

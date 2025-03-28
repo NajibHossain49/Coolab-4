@@ -2,7 +2,7 @@ import ProductsTable from "@/components/ProductsTable";
 import { Products as ProductsProps } from "../../types";
 // Async function to fetch customer data from the API
 async function getProducts(): Promise<ProductsProps[]> {
-  const res = await fetch("http://localhost:3000/api/products");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
   const data = await res.json();
   console.log(data.data);
   return data.data;

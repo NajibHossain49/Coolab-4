@@ -3,7 +3,7 @@ import { Orders as OrdersType } from "../../types";
 import React from "react";
 // Async function to fetch customer data from the API
 async function getOrders(): Promise<OrdersType[]> {
-  const res = await fetch("http://localhost:3000/api/orders");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
   const data = await res.json();
   console.log(data.data);
   return data.data;

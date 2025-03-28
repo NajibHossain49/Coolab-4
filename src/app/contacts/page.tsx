@@ -2,7 +2,7 @@ import ContactsTable from "@/components/ContactsTable";
 import { Contacts as ContactsProps } from "../../types";
 // Async function to fetch customer data from the API
 async function getContacts(): Promise<ContactsProps[]> {
-  const res = await fetch("http://localhost:3000/api/contacts");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contacts`);
   const data = await res.json();
   console.log(data.contacts);
   return data.contacts;
