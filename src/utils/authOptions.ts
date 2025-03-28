@@ -1,4 +1,3 @@
-
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -6,13 +5,13 @@ import CredentialsProvider from "next-auth/providers/credentials";
 declare module "next-auth" {
   interface Session {
     user: {
-      id: number;
+      id: string; // Changed to string to match the actual type
       email: string;
     };
   }
 
   interface User {
-    id: number;
+    id: string; // Changed to string
     email: string;
   }
 }
@@ -24,7 +23,7 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
-
+    
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -37,7 +36,7 @@ export const authOptions: NextAuthOptions = {
         // In-memory user data (replace with DB in production)
         const users = [
           {
-            id: 1,
+            id: "1", // Changed to string
             email: process.env.ADMIN_EMAIL as string,
             password: process.env.ADMIN_PASSWORD as string,
           },
@@ -70,7 +69,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, user }) {
       if (user) {
-        session.user.id = user.id;
+        session.user.id = user.id; // Now this should work with string type
         session.user.email = user.email;
       }
       return session;

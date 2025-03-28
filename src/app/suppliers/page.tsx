@@ -1,21 +1,33 @@
 import SuppliersTable from "@/components/SuppliersTable";
-import { Contacts as SuppliersProps } from "../../types";
-// Async function to fetch customer data from the API
-async function getSuppliers(): Promise<SuppliersProps[]> {
-  const res = await fetch("http://localhost:3000/api/suppliers");
-  const data = await res.json();
-  console.log(data.data);
-  return data.data;
+import type { Suppliers } from "../../types"; // Use type-only import
+
+// Async function to fetch supplier data from the API
+async function getSuppliers(): Promise<Suppliers[]> {
+  try {
+    const res = await fetch("http://localhost:3000/api/suppliers", { 
+      cache: 'no-store',
+      next: { revalidate: 0 }
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch suppliers');
+    }
+
+    const data = await res.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching suppliers:', error);
+    return []; // Return empty array in case of error
+  }
 }
 
 const Suppliers = async () => {
   const suppliers = await getSuppliers();
-  console.log("inside payments =====> ", suppliers);
+
   return (
     <div>
       <div>
-        <h1 className="text-xl font-bold mb-4">Supplies</h1>
-        {/* Pass the fetched customer data to the CustomersTable component as a prop */}
+        <h1 className="text-xl font-bold mb-4">Suppliers</h1>
         <SuppliersTable initialSuppliers={suppliers} />
       </div>
     </div>

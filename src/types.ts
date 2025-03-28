@@ -64,6 +64,8 @@ export interface Suppliers {
 }
 
 export interface Contacts {
+    id: any;
+    address: any;
     _id: string;
     name: string;
     email: string;
