@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const location = url.searchParams.get("location");
     const days = url.searchParams.get("days");
 
-    let filter: any = {};
+    const filter: any = {};
 
     // Apply search filter for 'name' (case-insensitive)
     if (name) {
