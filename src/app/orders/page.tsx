@@ -1,23 +1,36 @@
+"use client"; // Ensure this component runs only on the client side
+
 import OrdersTable from "@/components/OrdersTable";
 import { Orders as OrdersType } from "../../types";
-import React from "react";
-// Async function to fetch customer data from the API
-async function getOrders(): Promise<OrdersType[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
-  const data = await res.json();
-  console.log(data.data);
-  return data.data;
-}
+import React, { useEffect, useState } from "react";
 
-const Orders = async () => {
-  const orders = await getOrders();
+const Orders = () => {
+  const [orders, setOrders] = useState<OrdersType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchOrders() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
+        const data = await res.json();
+        setOrders(data.data);
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrders();
+  }, []);
+
   return (
     <div>
-      <div>
-        <h1 className="text-xl font-bold mb-4">Orders</h1>
-        {/* Pass the fetched customer data to the CustomersTable component as a prop */}
+      <h1 className="text-xl font-bold mb-4">Orders</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
         <OrdersTable initialOrders={orders} />
-      </div>
+      )}
     </div>
   );
 };

@@ -1,22 +1,34 @@
+"use client"; // Ensures this component runs only on the client side
+
 import PaymentTable from "@/components/PaymentsTable";
 import { Payments as PaymentsProps } from "../../types";
-// Async function to fetch customer data from the API
-async function getPayments(): Promise<PaymentsProps[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments`);
-  const data = await res.json();
-  console.log(data.data);
-  return data.data;
-}
+import React, { useEffect, useState } from "react";
 
-const Payments = async () => {
-  const payments = await getPayments();
+const Payments = () => {
+  const [payments, setPayments] = useState<PaymentsProps[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPayments() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments`);
+        const data = await res.json();
+        console.log("Fetched Payments:", data.data);
+        setPayments(data.data);
+      } catch (error) {
+        console.error("Error fetching payments:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPayments();
+  }, []);
+
   return (
     <div>
-      <div>
-        <h1 className="text-xl font-bold mb-4">Products</h1>
-        {/* Pass the fetched customer data to the CustomersTable component as a prop */}
-        <PaymentTable initialPayments={payments} />
-      </div>
+      <h1 className="text-xl font-bold mb-4">Payments</h1>
+      {loading ? <p>Loading...</p> : <PaymentTable initialPayments={payments} />}
     </div>
   );
 };
